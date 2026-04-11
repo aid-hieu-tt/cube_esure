@@ -1,0 +1,76 @@
+cubes:
+  - name: order_items
+    sql_table: "ecommere_service.\"OrderItems\""
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: id
+        sql: "{CUBE}.\"Id\""
+        type: string
+        primary_key: true
+
+      - name: orderid
+        sql: "{CUBE}.\"OrderId\""
+        type: string
+
+      - name: productName
+        sql: "({CUBE}.\"ProductSnapshot\"::json->>'name')"
+        type: string
+
+      - name: providerName
+        sql: "(({CUBE}.\"ProductSnapshot\"::json->'attributes'->'package')->>'providerName')"
+        type: string
+
+      - name: providerCode
+        sql: "(({CUBE}.\"ProductSnapshot\"::json->'attributes'->'package')->>'providerCode')"
+        type: string
+
+      - name: packageName
+        sql: "(({CUBE}.\"ProductSnapshot\"::json->'attributes'->'package')->>'name')"
+        type: string
+
+      - name: durationName
+        sql: "(({CUBE}.\"ProductSnapshot\"::json->'attributes'->'duration')->>'name')"
+        type: string
+
+      - name: durationMonths
+        sql: "(({CUBE}.\"ProductSnapshot\"::json->'attributes'->'duration')->>'months')::int"
+        type: number
+
+      - name: invoiceexporttype
+        sql: "{CUBE}.\"InvoiceExportType\""
+        type: string
+
+      - name: isdeleted
+        sql: "{CUBE}.\"IsDeleted\""
+        type: boolean
+
+      - name: createdat
+        sql: "{CUBE}.\"CreatedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+      - name: quantity
+        sql: "{CUBE}.\"Quantity\""
+        type: sum
+
+      - name: totalRevenue
+        sql: "{CUBE}.\"TotalPrice\""
+        type: sum
+        format: currency
+
+      - name: totalTax
+        sql: "{CUBE}.\"TaxAmount\""
+        type: sum
+
+      - name: avgUnitPrice
+        sql: "{CUBE}.\"UnitPrice\""
+        type: avg
+        format: currency
+
+    pre_aggregations: []

@@ -1,0 +1,38 @@
+views:
+  - name: dashboard_overview
+    description: "Tổng quan dashboard - KPIs, revenue, orders"
+    cubes:
+      - join_path: orders
+        includes:
+          # Measures
+          - count
+          - totalRevenue
+          - totalTax
+          - totalPaid
+          - totalDiscount
+          - avgOrderValue
+          # Dimensions
+          - status
+          - paymentmethod
+          - paymentstatus
+          - city
+          - customerName
+          - orderdate
+          - createdat
+          - delivereddate
+
+      - join_path: orders.order_items
+        prefix: true
+        includes:
+          - count
+          - quantity
+          - totalRevenue
+          - totalTax
+          - avgUnitPrice
+          - productName
+          - providerName
+          - providerCode
+          - packageName
+          - durationName
+          - durationMonths
+          - createdat

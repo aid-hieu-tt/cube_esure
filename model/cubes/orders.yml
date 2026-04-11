@@ -1,0 +1,92 @@
+cubes:
+  - name: orders
+    sql_table: "ecommere_service.\"Orders\""
+    data_source: default
+
+    joins:
+      - name: order_items
+        sql: "{CUBE}.\"Id\" = {order_items}.\"OrderId\""
+        relationship: one_to_many
+
+    dimensions:
+      - name: id
+        sql: "{CUBE}.\"Id\""
+        type: string
+        primary_key: true
+
+      - name: ordercode
+        sql: "{CUBE}.\"OrderCode\""
+        type: string
+
+      - name: ordernumber
+        sql: "{CUBE}.\"OrderNumber\""
+        type: string
+
+      - name: status
+        sql: "{CUBE}.\"Status\""
+        type: string
+
+      - name: paymentstatus
+        sql: "{CUBE}.\"PaymentStatus\""
+        type: string
+
+      - name: paymentmethod
+        sql: "{CUBE}.\"PaymentMethod\""
+        type: string
+
+      - name: city
+        sql: "COALESCE(NULLIF(TRIM(({CUBE}.\"ShippingAddress\")::json->>'city'), ''), NULLIF(TRIM(({CUBE}.\"ShippingAddress\")::json->>'City'), ''), 'N/A')"
+        type: string
+
+      - name: customerName
+        sql: "COALESCE(({CUBE}.\"ShippingAddress\")::json->>'fullName', ({CUBE}.\"ShippingAddress\")::json->>'FullName', 'N/A')"
+        type: string
+
+      - name: customerPhone
+        sql: "COALESCE(({CUBE}.\"ShippingAddress\")::json->>'phone', ({CUBE}.\"ShippingAddress\")::json->>'Phone', '')"
+        type: string
+
+      - name: isdeleted
+        sql: "{CUBE}.\"IsDeleted\""
+        type: boolean
+
+      - name: orderdate
+        sql: "{CUBE}.\"OrderDate\""
+        type: time
+
+      - name: createdat
+        sql: "{CUBE}.\"CreatedAt\""
+        type: time
+
+      - name: delivereddate
+        sql: "{CUBE}.\"DeliveredDate\""
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+      - name: totalRevenue
+        sql: "{CUBE}.\"TotalAmount\""
+        type: sum
+        format: currency
+
+      - name: totalTax
+        sql: "{CUBE}.\"TaxAmount\""
+        type: sum
+
+      - name: totalPaid
+        sql: "{CUBE}.\"PaidAmount\""
+        type: sum
+        format: currency
+
+      - name: totalDiscount
+        sql: "{CUBE}.\"DiscountAmount\""
+        type: sum
+
+      - name: avgOrderValue
+        sql: "{CUBE}.\"TotalAmount\""
+        type: avg
+        format: currency
+
+    pre_aggregations: []
