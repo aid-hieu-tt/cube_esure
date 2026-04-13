@@ -16,27 +16,27 @@ cubes:
         type: string
 
       - name: productName
-        sql: "({CUBE}.\"ProductSnapshot\"::json->>'name')"
+        sql: "({CUBE}.\"ProductSnapshot\"::json->>'Name')"
         type: string
 
       - name: providerName
-        sql: "(({CUBE}.\"ProductSnapshot\"::json->'attributes'->'package')->>'providerName')"
+        sql: 'COALESCE( NULLIF(TRIM(SUBSTRING( REPLACE({CUBE}."ProductSnapshot"::text, CHR(92), '''') FROM ''providerName"?[[:space:]]*:[[:space:]]*"?([^"]+)'' )), ''''), NULLIF(TRIM(SUBSTRING( {CUBE}."ProductSnapshot"::json->''Attributes''->>''provider'' FROM ''name:[[:space:]]*([^,]+)'' )), '''') )'
         type: string
 
       - name: providerCode
-        sql: "(({CUBE}.\"ProductSnapshot\"::json->'attributes'->'package')->>'providerCode')"
+        sql: 'COALESCE( NULLIF(TRIM(SUBSTRING( REPLACE({CUBE}."ProductSnapshot"::text, CHR(92), '''') FROM ''providerCode"?[[:space:]]*:[[:space:]]*"?([^"]+)'' )), ''''), NULLIF(TRIM(SUBSTRING( {CUBE}."ProductSnapshot"::json->''Attributes''->>''provider'' FROM ''code:[[:space:]]*([^,]+)'' )), '''') )'
         type: string
 
       - name: packageName
-        sql: "(({CUBE}.\"ProductSnapshot\"::json->'attributes'->'package')->>'name')"
+        sql: "({CUBE}.\"ProductSnapshot\"::json->>'Name')"
         type: string
 
       - name: durationName
-        sql: "(({CUBE}.\"ProductSnapshot\"::json->'attributes'->'duration')->>'name')"
+        sql: 'COALESCE( NULLIF(TRIM(SUBSTRING( REPLACE({CUBE}."ProductSnapshot"::text, CHR(92), '''') FROM ''"duration"[^:]*:[[:space:]]*"['' || CHR(123) || ''][^'' || CHR(125) || '']*"name"[[:space:]]*:[[:space:]]*"([^"]+)'' )), ''''), NULLIF(TRIM(SUBSTRING( {CUBE}."ProductSnapshot"::json->''Attributes''->>''duration'' FROM ''name:[[:space:]]*([^,]+)'' )), '''') )'
         type: string
 
       - name: durationMonths
-        sql: "(({CUBE}.\"ProductSnapshot\"::json->'attributes'->'duration')->>'months')::int"
+        sql: "({CUBE}.\"ProductSnapshot\"::json->'Attributes'->'duration'->>'months')::int"
         type: number
 
       - name: invoiceexporttype

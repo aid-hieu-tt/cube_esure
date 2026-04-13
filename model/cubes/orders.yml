@@ -16,7 +16,7 @@ cubes:
         relationship: many_to_one
 
       - name: user_agencies
-        sql: "{CUBE}.\"PartnerId\" = {user_agencies}.\"UserId\""
+        sql: "{CUBE}.\"UserId\" = {user_agencies}.\"UserId\""
         relationship: many_to_one
 
     dimensions:
@@ -62,7 +62,7 @@ cubes:
         type: string
 
       - name: userId
-        sql: "{CUBE}.\"PartnerId\"::text"
+        sql: "{CUBE}.\"UserId\""
         type: string
 
       - name: isdeleted
@@ -107,5 +107,3 @@ cubes:
         sql: "{CUBE}.\"TotalAmount\""
         type: avg
         format: currency
-
-    pre_aggregations: []

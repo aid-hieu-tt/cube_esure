@@ -1,15 +1,49 @@
 cubes:
   - name: user_agencies
-    sql_table: "agency_service.\"UserAgencies\""
+    sql: >
+      SELECT 
+        ua."Id", 
+        ua."UserId", 
+        ua."AgencyId",
+        ua."FullName" as "EmployeeName",
+        
+        -- Tenant ID
+        CASE 
+            WHEN a."ParentAgencyId" IS NULL THEN a."Id"
+            WHEN parent1."ParentAgencyId" IS NULL THEN parent1."Id"
+            WHEN parent2."ParentAgencyId" IS NULL THEN parent2."Id"
+        END as "TenantId",
+        
+        -- Region ID
+        CASE 
+            WHEN a."ParentAgencyId" IS NULL THEN NULL
+            WHEN a."ParentAgencyId" IS NOT NULL AND a."IsBranch" = false THEN a."Id"
+            WHEN parent1."ParentAgencyId" IS NOT NULL AND parent1."IsBranch" = false THEN parent1."Id"
+        END as "RegionId",
+        
+        -- Branch ID
+        CASE 
+            WHEN a."IsBranch" = true THEN a."Id"
+            ELSE NULL
+        END as "BranchId"
+        
+      FROM agency_service."UserAgencies" ua
+      LEFT JOIN agency_service."Agencies" a ON ua."AgencyId" = a."Id"
+      LEFT JOIN agency_service."Agencies" parent1 ON a."ParentAgencyId" = parent1."Id"
+      LEFT JOIN agency_service."Agencies" parent2 ON parent1."ParentAgencyId" = parent2."Id"
     data_source: default
 
     joins:
       - name: branches
         sql: "{CUBE}.\"BranchId\" = {branches}.\"Id\""
         relationship: many_to_one
-        
+
       - name: regions
         sql: "{CUBE}.\"RegionId\" = {regions}.\"Id\""
+        relationship: many_to_one
+
+      - name: tenants
+        sql: "{CUBE}.\"TenantId\" = {tenants}.\"Id\""
         relationship: many_to_one
 
     dimensions:
@@ -34,6 +68,10 @@ cubes:
         sql: "{CUBE}.\"RegionId\""
         type: string
 
+      - name: tenantId
+        sql: "{CUBE}.\"TenantId\""
+        type: string
+
       - name: branchCode
         sql: "{branches.code}"
         type: string
@@ -44,7 +82,11 @@ cubes:
         type: string
         title: "Mã Vùng"
 
-      # Proxy dimensions directly accessing the joined models for ease of use
+      - name: tenantCode
+        sql: "{tenants.code}"
+        type: string
+        title: "Mã Tenant"
+
       - name: branchName
         sql: "{branches.name}"
         type: string
@@ -54,6 +96,16 @@ cubes:
         sql: "{regions.name}"
         type: string
         title: "Tên Vùng"
+
+      - name: tenantName
+        sql: "{tenants.name}"
+        type: string
+        title: "Tên Tenant"
+
+      - name: employeeName
+        sql: "{CUBE}.\"EmployeeName\""
+        type: string
+        title: "Tên Nhân Viên"
 
     measures:
       - name: count

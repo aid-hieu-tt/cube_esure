@@ -49,5 +49,8 @@ views:
         includes:
           - branchCode
           - regionCode
+          - tenantCode
           - branchName
           - regionName
+          - tenantName
+          - employeeName

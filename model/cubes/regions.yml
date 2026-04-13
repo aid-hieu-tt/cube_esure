@@ -1,21 +1,23 @@
 cubes:
   - name: regions
-    sql_table: "agency_service.\"Regions\""
+    sql: >
+      SELECT * FROM agency_service."Agencies" WHERE "ParentAgencyId" IS NOT NULL AND "IsBranch" = false
     data_source: default
 
-    joins: []
+    joins:
+      - name: tenants
+        sql: "{CUBE}.\"ParentAgencyId\" = {tenants}.\"Id\""
+        relationship: many_to_one
 
     dimensions:
       - name: id
         sql: "{CUBE}.\"Id\""
         type: string
         primary_key: true
-
       - name: name
         sql: "{CUBE}.\"Name\""
         type: string
         title: "Tên Vùng"
-
       - name: code
         sql: "{CUBE}.\"Code\""
         type: string

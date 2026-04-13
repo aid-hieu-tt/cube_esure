@@ -54,5 +54,3 @@ cubes:
     measures:
       - name: count
         type: count
-
-    pre_aggregations: []
