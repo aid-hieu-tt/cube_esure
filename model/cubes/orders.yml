@@ -8,6 +8,10 @@ cubes:
         sql: "{CUBE}.\"Id\" = {order_items}.\"OrderId\""
         relationship: one_to_many
 
+      - name: agencies
+        sql: "{CUBE}.\"PartnerId\" = {agencies}.\"Id\""
+        relationship: many_to_one
+
     dimensions:
       - name: id
         sql: "{CUBE}.\"Id\""
@@ -44,6 +48,10 @@ cubes:
 
       - name: customerPhone
         sql: "COALESCE(({CUBE}.\"ShippingAddress\")::json->>'phone', ({CUBE}.\"ShippingAddress\")::json->>'Phone', '')"
+        type: string
+
+      - name: partnerId
+        sql: "{CUBE}.\"PartnerId\""
         type: string
 
       - name: isdeleted

@@ -36,3 +36,10 @@ views:
           - durationName
           - durationMonths
           - createdat
+
+      - join_path: orders.agencies
+        prefix: true
+        includes:
+          - name
+          - code
+          - logo

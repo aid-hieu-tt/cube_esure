@@ -1,0 +1,58 @@
+cubes:
+  - name: agencies
+    sql_table: "agency_service.\"Agencies\""
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: id
+        sql: "{CUBE}.\"Id\""
+        type: string
+        primary_key: true
+
+      - name: name
+        sql: "{CUBE}.\"Name\""
+        type: string
+
+      - name: code
+        sql: "{CUBE}.\"Code\""
+        type: string
+
+      - name: logo
+        sql: "{CUBE}.\"Logo\""
+        type: string
+
+      - name: email
+        sql: "{CUBE}.\"Email\""
+        type: string
+
+      - name: phoneNumber
+        sql: "{CUBE}.\"PhoneNumber\""
+        type: string
+
+      - name: address
+        sql: "{CUBE}.\"Address\""
+        type: string
+
+      - name: primaryColor
+        sql: "{CUBE}.\"PrimaryColor\""
+        type: string
+
+      - name: isActive
+        sql: "{CUBE}.\"IsActive\""
+        type: boolean
+
+      - name: isDeleted
+        sql: "{CUBE}.\"IsDeleted\""
+        type: boolean
+
+      - name: createdAt
+        sql: "{CUBE}.\"CreatedAt\""
+        type: time
+
+    measures:
+      - name: count
+        type: count
+
+    pre_aggregations: []
