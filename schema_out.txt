@@ -1,0 +1,14 @@
+  column_name  |        data_type         
+---------------+--------------------------
+ Id            | text
+ UserId        | character varying
+ AgencyId      | character varying
+ Role          | character varying
+ IsActive      | boolean
+ Status        | character varying
+ JoinedAt      | timestamp with time zone
+ UserMappingId | text
+ CreatedAt     | timestamp with time zone
+ IsDeleted     | boolean
+(10 rows)
+

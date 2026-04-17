@@ -1,0 +1,25 @@
+cubes:
+  - name: regions
+    sql_table: "agency_service.\"Regions\""
+    data_source: default
+
+    joins: []
+
+    dimensions:
+      - name: id
+        sql: "{CUBE}.\"Id\""
+        type: string
+        primary_key: true
+
+      - name: name
+        sql: "{CUBE}.\"Name\""
+        type: string
+        title: "Tên Vùng"
+
+      - name: code
+        sql: "{CUBE}.\"Code\""
+        type: string
+
+    measures:
+      - name: count
+        type: count

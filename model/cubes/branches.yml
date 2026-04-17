@@ -1,0 +1,32 @@
+cubes:
+  - name: branches
+    sql_table: "agency_service.\"Branches\""
+    data_source: default
+
+    joins:
+      - name: regions
+        sql: "{CUBE}.\"RegionId\" = {regions}.\"Id\""
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: "{CUBE}.\"Id\""
+        type: string
+        primary_key: true
+
+      - name: name
+        sql: "{CUBE}.\"Name\""
+        type: string
+        title: "Tên Chi Nhánh"
+
+      - name: code
+        sql: "{CUBE}.\"Code\""
+        type: string
+
+      - name: regionId
+        sql: "{CUBE}.\"RegionId\""
+        type: string
+
+    measures:
+      - name: count
+        type: count

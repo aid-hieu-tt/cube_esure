@@ -43,3 +43,11 @@ views:
           - name
           - code
           - logo
+
+      - join_path: orders.user_agencies
+        prefix: true
+        includes:
+          - branchCode
+          - regionCode
+          - branchName
+          - regionName

@@ -1,0 +1,60 @@
+cubes:
+  - name: user_agencies
+    sql_table: "agency_service.\"UserAgencies\""
+    data_source: default
+
+    joins:
+      - name: branches
+        sql: "{CUBE}.\"BranchId\" = {branches}.\"Id\""
+        relationship: many_to_one
+        
+      - name: regions
+        sql: "{CUBE}.\"RegionId\" = {regions}.\"Id\""
+        relationship: many_to_one
+
+    dimensions:
+      - name: id
+        sql: "{CUBE}.\"Id\""
+        type: string
+        primary_key: true
+
+      - name: userId
+        sql: "{CUBE}.\"UserId\""
+        type: string
+
+      - name: agencyId
+        sql: "{CUBE}.\"AgencyId\""
+        type: string
+
+      - name: branchId
+        sql: "{CUBE}.\"BranchId\""
+        type: string
+
+      - name: regionId
+        sql: "{CUBE}.\"RegionId\""
+        type: string
+
+      - name: branchCode
+        sql: "{branches.code}"
+        type: string
+        title: "Mã Chi Nhánh"
+
+      - name: regionCode
+        sql: "{regions.code}"
+        type: string
+        title: "Mã Vùng"
+
+      # Proxy dimensions directly accessing the joined models for ease of use
+      - name: branchName
+        sql: "{branches.name}"
+        type: string
+        title: "Tên Chi Nhánh"
+
+      - name: regionName
+        sql: "{regions.name}"
+        type: string
+        title: "Tên Vùng"
+
+    measures:
+      - name: count
+        type: count

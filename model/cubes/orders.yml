@@ -3,6 +3,9 @@ cubes:
     sql_table: "ecommere_service.\"Orders\""
     data_source: default
 
+    refresh_key:
+      every: 5 minutes
+
     joins:
       - name: order_items
         sql: "{CUBE}.\"Id\" = {order_items}.\"OrderId\""
@@ -10,6 +13,10 @@ cubes:
 
       - name: agencies
         sql: "{CUBE}.\"PartnerId\" = {agencies}.\"Id\""
+        relationship: many_to_one
+
+      - name: user_agencies
+        sql: "{CUBE}.\"PartnerId\" = {user_agencies}.\"UserId\""
         relationship: many_to_one
 
     dimensions:
@@ -52,6 +59,10 @@ cubes:
 
       - name: partnerId
         sql: "{CUBE}.\"PartnerId\""
+        type: string
+
+      - name: userId
+        sql: "{CUBE}.\"PartnerId\"::text"
         type: string
 
       - name: isdeleted

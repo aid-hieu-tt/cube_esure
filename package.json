@@ -10,5 +10,8 @@
   "devDependencies": {
     "@cubejs-backend/postgres-driver": "^1.6.32",
     "@cubejs-backend/server": "^1.6.32"
+  },
+  "dependencies": {
+    "pg": "^8.20.0"
   }
 }
