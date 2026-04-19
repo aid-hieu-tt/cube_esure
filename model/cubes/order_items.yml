@@ -28,7 +28,7 @@ cubes:
         type: string
 
       - name: packageName
-        sql: "({CUBE}.\"ProductSnapshot\"::json->>'Name')"
+        sql: 'COALESCE(NULLIF(TRIM(SUBSTRING({CUBE}."ProductSnapshot"::json->''Attributes''->>''package'' FROM ''"name"[[:space:]]*:[[:space:]]*"([^"]+)"'')), ''''), {CUBE}."ProductSnapshot"::json->>''Name'')'
         type: string
 
       - name: durationName
