@@ -4,7 +4,8 @@ cubes:
     data_source: default
 
     refresh_key:
-      every: 5 minutes
+      every: 30 minutes
+      sql: "SELECT MAX(\"Id\") FROM ecommere_service.\"Orders\""
 
     joins:
       - name: order_items
